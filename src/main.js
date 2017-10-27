@@ -11,11 +11,16 @@ app.on('ready', _ => {
         show: false
     })
 
+    mainWindow.openDevTools() // open the dev tools
+
     mainWindow.loadURL(`file://${__dirname}/capture.html`)
 
     mainWindow.on('clsoe', _ => {
         mainWindow = null // run the gc
     })
 
-    globalShortcut.register('CommandOrControl+Alt+D', _ => {console.log('got shortcut');})
+    globalShortcut.register('CommandOrControl+Alt+D', _ => {
+        console.log('got shortcut');
+        mainWindow.webContents.send('capture', app.getPath('pictures'))
+    })
 })

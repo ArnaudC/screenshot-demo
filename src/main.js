@@ -1,11 +1,21 @@
-let electron = require('electron')
+const electron = require('electron')
 
-let {BrowserWindow, app} = electron
+const {BrowserWindow, app, globalShortcut } = electron
 
 app.on('ready', _ => {
-    console.log('in')
-    let window = new BrowserWindow({
-        height: 400,
-        width: 400
+    let mainWindow = new BrowserWindow({ // create an invisible window
+        height: 0,
+        width: 0,
+        resizeable: false,
+        frame: false,
+        show: false
     })
+
+    mainWindow.loadURL(`file://${__dirname}/capture.html`)
+
+    mainWindow.on('clsoe', _ => {
+        mainWindow = null // run the gc
+    })
+
+    globalShortcut.register('CommandOrControl+Alt+D', _ => {console.log('got shortcut');})
 })
